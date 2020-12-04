@@ -1,0 +1,30 @@
+[user]
+	name = Marcello de Sales
+	email = marcello.desales@gmail.com
+	signingkey = CEFC81CE1AFB21C0
+[alias]
+    lol = log --pretty=oneline --abbrev-commit --graph --decorate
+    lg = log --color --graph --pretty=format:'%C(yellow)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    new = !sh -c 'git log $1@{1}..$1@{0} "$@"'
+    reflog = gitk --all --date-order $(git log -g --pretty=%H)
+    #lostfound = gitk --all --date-order $(git fsck | grep "dangling commit" | awk '{print $3;}')
+    lostfound = !sh -c "git fsck | awk {print $3;}"
+    files = show --pretty="format:" --name-only
+    refact = blame -C
+    which = rev-parse --symbolic-full-name HEAD
+    forcestashpop = stash show -p | git apply && git stash drop
+    # http://stackoverflow.com/questions/1105253/how-would-i-extract-a-single-file-or-changes-to-a-file-from-a-git-stash 
+    stashout = checkout stash@{$0} -- $1
+        
+    #### git start dev/newWork master
+    start = !sh -c 'git checkout -b $0 origin/$1 --track'
+
+    #### git release dev/newWork master
+    release = !sh -c 'git checkout $1 && git pull origin $1 && git merge --no-ff $0 && git push origin $1 && git branch -d $0'
+    logdiff = !sh -c 'git log origin/$0..$1'
+
+    commitj = !sh -c 'gitmoji -c'
+[color]
+	ui = true
+[push]
+	default = simple
